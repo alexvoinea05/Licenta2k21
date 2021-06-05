@@ -1,0 +1,28 @@
+<div>
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <h2>Upload Certificate</h2>
+      <form name="form" role="form" (ngSubmit)="onSubmit()" [formGroup]="imageForm">
+        <div class="form-group">
+          <label class="form-control-label" for="imageUrl">Certificate</label>
+          <input
+            type="file"
+            name="image"
+            accept="image/png, image/jpeg"
+            placeholder="Certificate"
+            class="form-control"
+            data-cy="imageUrl"
+            (change)="onFileSelect($event)"
+          />
+
+          <!--<button (click)="onSubmit()" 
+        class="btn btn-success">
+        Upload
+    </button>-->
+        </div>
+
+        <button type="submit" class="btn btn-primary" data-cy="submit">Upload</button>
+      </form>
+    </div>
+  </div>
+</div>

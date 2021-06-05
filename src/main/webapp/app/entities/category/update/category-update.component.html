@@ -1,0 +1,90 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-category-heading" data-cy="CategoryCreateUpdateHeading">Create or edit a Category</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('idCategory')!.value == null">
+          <label class="form-control-label" for="field_idCategory">Id Category</label>
+          <input
+            type="number"
+            class="form-control"
+            name="idCategory"
+            id="field_idCategory"
+            data-cy="idCategory"
+            formControlName="idCategory"
+            [readonly]="true"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_categoryName">Category Name</label>
+          <input
+            type="text"
+            class="form-control"
+            name="categoryName"
+            id="field_categoryName"
+            data-cy="categoryName"
+            formControlName="categoryName"
+          />
+          <div
+            *ngIf="editForm.get('categoryName')!.invalid && (editForm.get('categoryName')!.dirty || editForm.get('categoryName')!.touched)"
+          >
+            <small class="form-text text-danger" *ngIf="editForm.get('categoryName')?.errors?.required"> This field is required. </small>
+            <small class="form-text text-danger" *ngIf="editForm.get('categoryName')?.errors?.minlength">
+              This field is required to be at least 1 characters.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_createdAt">Created At</label>
+          <div class="d-flex">
+            <input
+              id="field_createdAt"
+              data-cy="createdAt"
+              type="datetime-local"
+              class="form-control"
+              name="createdAt"
+              formControlName="createdAt"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_modifiedAt">Modified At</label>
+          <div class="d-flex">
+            <input
+              id="field_modifiedAt"
+              data-cy="modifiedAt"
+              type="datetime-local"
+              class="form-control"
+              name="modifiedAt"
+              formControlName="modifiedAt"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

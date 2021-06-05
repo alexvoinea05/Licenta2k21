@@ -1,0 +1,51 @@
+{
+  "name": "CartItems",
+  "fields": [
+    {
+      "fieldName": "idCartItems",
+      "fieldType": "Long",
+      "options": {
+        "id": true
+      }
+    },
+    {
+      "fieldName": "quantity",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["required", "min"],
+      "fieldValidateRulesMin": "0.1"
+    },
+    {
+      "fieldName": "createdAt",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "modifiedAt",
+      "fieldType": "ZonedDateTime"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "product",
+      "otherEntityRelationshipName": "cartItems",
+      "relationshipName": "idProduct"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "cartOrderDetails",
+      "otherEntityRelationshipName": "cartItems",
+      "relationshipName": "idOrderDetails"
+    }
+  ],
+  "javadoc": "not an ignored comment",
+  "entityTableName": "cart_items",
+  "dto": "mapstruct",
+  "pagination": "infinite-scroll",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20210426175633"
+}

@@ -1,0 +1,30 @@
+<div>
+  <h2>
+    <span id="certificate-grower-page-heading" data-cy="certificateGrowerPageHeading">Grower List Requests</span>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="table-responsive" *ngIf="users">
+    <table class="table table-striped" aria-describedby="user-management-page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="transition.bind(this)">
+          <th scope="col" jhiSortBy="id"><span>ID</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col"><span>Certificate</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody *ngIf="users">
+        <tr *ngFor="let user of users; trackBy: trackIdentity">
+          <td>
+            <a [routerLink]="['/admin/user-management', user.login, 'edit']">{{ user.id }}</a>
+          </td>
+          <td><img src="{{ user.imageUrl }}" alt="{{ user.imageUrl }}" [border]="3" height="100" width="100" /></td>
+          <!--<td><img src="../../../content/images/jhipster_family_member_3_head-192.png" alt="nu merge" height=10 width=10/></td>
+        --></tr>
+      </tbody>
+    </table>
+  </div>
+</div>

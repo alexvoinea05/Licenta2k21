@@ -1,0 +1,54 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="cartItems">
+      <h2 data-cy="cartItemsDetailsHeading"><span>Cart Items</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>Id Cart Items</span></dt>
+        <dd>
+          <span>{{ cartItems.idCartItems }}</span>
+        </dd>
+        <dt><span>Quantity</span></dt>
+        <dd>
+          <span>{{ cartItems.quantity }}</span>
+        </dd>
+        <dt><span>Created At</span></dt>
+        <dd>
+          <span>{{ cartItems.createdAt | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Modified At</span></dt>
+        <dd>
+          <span>{{ cartItems.modifiedAt | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Id Product</span></dt>
+        <dd>
+          <div *ngIf="cartItems.idProduct">
+            <a [routerLink]="['/product', cartItems.idProduct?.idProduct, 'view']">{{ cartItems.idProduct?.idProduct }}</a>
+          </div>
+        </dd>
+        <dt><span>Id Order Details</span></dt>
+        <dd>
+          <div *ngIf="cartItems.idOrderDetails">
+            <a [routerLink]="['/cart-order-details', cartItems.idOrderDetails?.idCartOrderDetails, 'view']">{{
+              cartItems.idOrderDetails?.idCartOrderDetails
+            }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/cart-items', cartItems.idCartItems, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

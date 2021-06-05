@@ -1,0 +1,117 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-cart-order-details-heading" data-cy="CartOrderDetailsCreateUpdateHeading">Create or edit a Cart Order Details</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('idCartOrderDetails')!.value == null">
+          <label class="form-control-label" for="field_idCartOrderDetails">Id Cart Order Details</label>
+          <input
+            type="number"
+            class="form-control"
+            name="idCartOrderDetails"
+            id="field_idCartOrderDetails"
+            data-cy="idCartOrderDetails"
+            formControlName="idCartOrderDetails"
+            [readonly]="true"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_totalPrice">Total Price</label>
+          <input
+            type="number"
+            class="form-control"
+            name="totalPrice"
+            id="field_totalPrice"
+            data-cy="totalPrice"
+            formControlName="totalPrice"
+          />
+          <div *ngIf="editForm.get('totalPrice')!.invalid && (editForm.get('totalPrice')!.dirty || editForm.get('totalPrice')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('totalPrice')?.errors?.min">
+              This field should be at least 0.1.
+            </small>
+            <small class="form-text text-danger" [hidden]="!editForm.get('totalPrice')?.errors?.number">
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_createdAt">Created At</label>
+          <div class="d-flex">
+            <input
+              id="field_createdAt"
+              data-cy="createdAt"
+              type="datetime-local"
+              class="form-control"
+              name="createdAt"
+              formControlName="createdAt"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_modifiedAt">Modified At</label>
+          <div class="d-flex">
+            <input
+              id="field_modifiedAt"
+              data-cy="modifiedAt"
+              type="datetime-local"
+              class="form-control"
+              name="modifiedAt"
+              formControlName="modifiedAt"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_statusCommand">Status Command</label>
+          <input
+            type="text"
+            class="form-control"
+            name="statusCommand"
+            id="field_statusCommand"
+            data-cy="statusCommand"
+            formControlName="statusCommand"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_idAppUser">Id App User</label>
+          <select class="form-control" id="field_idAppUser" data-cy="idAppUser" name="idAppUser" formControlName="idAppUser">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="
+                appUserOption.idAppUser === editForm.get('idAppUser')!.value?.idAppUser ? editForm.get('idAppUser')!.value : appUserOption
+              "
+              *ngFor="let appUserOption of appUsersSharedCollection; trackBy: trackAppUserByIdAppUser"
+            >
+              {{ appUserOption.idAppUser }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

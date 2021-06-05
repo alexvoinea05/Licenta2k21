@@ -1,0 +1,88 @@
+<div>
+  <h2 id="page-heading" data-cy="AppUserHeading">
+    <span>App Users</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info mr-2" (click)="reset()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Refresh List</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-app-user"
+        [routerLink]="['/app-user/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span> Create a new App User </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="appUsers?.length === 0">
+    <span>No appUsers found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="appUsers && appUsers.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
+          <th scope="col" jhiSortBy="idAppUser"><span>Id App User</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="certificateUrl"><span>Certificate Url</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="adress"><span>Adress</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="createdAt"><span>Created At</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="modifiedAt"><span>Modified At</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="user.id"><span>User</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+        <tr *ngFor="let appUser of appUsers; trackBy: trackIdAppUser" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/app-user', appUser.idAppUser, 'view']">{{ appUser.idAppUser }}</a>
+          </td>
+          <td>{{ appUser.certificateUrl }}</td>
+          <td>{{ appUser.adress }}</td>
+          <td>{{ appUser.createdAt | formatMediumDatetime }}</td>
+          <td>{{ appUser.modifiedAt | formatMediumDatetime }}</td>
+          <td>
+            {{ appUser.user?.id }}
+          </td>
+          <td class="text-right">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/app-user', appUser.idAppUser, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline">View</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/app-user', appUser.idAppUser, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(appUser)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

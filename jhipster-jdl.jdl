@@ -1,0 +1,70 @@
+
+entity Category {
+	@Id idCategory Long,
+    categoryName String required minlength(1),
+    createdAt ZonedDateTime,
+    modifiedAt ZonedDateTime
+}
+
+entity Product {
+	@Id idProduct Long,
+    name String required minlength(1),
+    price BigDecimal required min(0.1),
+    stock BigDecimal required min(0.1),
+    imageUrl String,
+    productUrl String,
+    createdAt ZonedDateTime,
+    modifiedAt ZonedDateTime
+    
+}
+
+// an ignored comment
+/** not an ignored comment */
+entity CartItems {
+	@Id idCartItems Long,
+	quantity BigDecimal required min(0.1),
+    createdAt ZonedDateTime,
+    modifiedAt ZonedDateTime
+}
+
+entity CartOrderDetails {
+	@Id idCartOrderDetails Long,
+    totalPrice BigDecimal min(0.1),
+    createdAt ZonedDateTime,
+    modifiedAt ZonedDateTime
+    
+}
+
+
+entity AppUser {
+	@Id idAppUser Long,
+    certificateUrl String,
+    adress String required,
+    createdAt ZonedDateTime,
+    modifiedAt ZonedDateTime
+}
+
+relationship OneToMany {
+	Category to Product{idCategory},
+	Product to CartItems{idProduct},
+	CartOrderDetails to CartItems{idOrderDetails},
+	AppUser to CartOrderDetails{idAppUser},
+	AppUser to Product{idGrower}
+}
+
+relationship OneToOne {
+	AppUser{user} to User{appUser}
+}
+
+paginate Category, Product, AppUser, CartItems, CartOrderDetails with infinite-scroll
+
+// Use Data Transfer Objects (DTO)
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+
+filter Category, Product
+
+// Set an angular suffix
+// angularSuffix * with mySuffix

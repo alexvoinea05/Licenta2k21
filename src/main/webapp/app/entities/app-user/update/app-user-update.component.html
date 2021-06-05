@@ -1,0 +1,103 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-app-user-heading" data-cy="AppUserCreateUpdateHeading">Create or edit a App User</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('idAppUser')!.value == null">
+          <label class="form-control-label" for="field_idAppUser">Id App User</label>
+          <input
+            type="number"
+            class="form-control"
+            name="idAppUser"
+            id="field_idAppUser"
+            data-cy="idAppUser"
+            formControlName="idAppUser"
+            [readonly]="true"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_certificateUrl">Certificate Url</label>
+          <input
+            type="text"
+            class="form-control"
+            name="certificateUrl"
+            id="field_certificateUrl"
+            data-cy="certificateUrl"
+            formControlName="certificateUrl"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_adress">Adress</label>
+          <input type="text" class="form-control" name="adress" id="field_adress" data-cy="adress" formControlName="adress" />
+          <div *ngIf="editForm.get('adress')!.invalid && (editForm.get('adress')!.dirty || editForm.get('adress')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('adress')?.errors?.required"> This field is required. </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_createdAt">Created At</label>
+          <div class="d-flex">
+            <input
+              id="field_createdAt"
+              data-cy="createdAt"
+              type="datetime-local"
+              class="form-control"
+              name="createdAt"
+              formControlName="createdAt"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_modifiedAt">Modified At</label>
+          <div class="d-flex">
+            <input
+              id="field_modifiedAt"
+              data-cy="modifiedAt"
+              type="datetime-local"
+              class="form-control"
+              name="modifiedAt"
+              formControlName="modifiedAt"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_user">User</label>
+          <select class="form-control" id="field_user" data-cy="user" name="user" formControlName="user">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="userOption.id === editForm.get('user')!.value?.id ? editForm.get('user')!.value : userOption"
+              *ngFor="let userOption of usersSharedCollection; trackBy: trackUserById"
+            >
+              {{ userOption.id }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,83 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-products-cart-heading" data-cy="ProductAddToCart">Add product to cart</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('idProduct')!.value == null">
+          <label class="form-control-label" for="field_idProduct">Id Product</label>
+          <input
+            type="number"
+            class="form-control"
+            name="idProduct"
+            id="field_idProduct"
+            data-cy="idProduct"
+            formControlName="idProduct"
+            [readonly]="true"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_name">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" [readonly]="true" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_price">Price</label>
+          <input
+            type="number"
+            class="form-control"
+            name="price"
+            id="field_price"
+            data-cy="price"
+            formControlName="price"
+            [readonly]="true"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_stock">Stock</label>
+          <input
+            type="number"
+            class="form-control"
+            name="stock"
+            id="field_stock"
+            data-cy="stock"
+            formControlName="stock"
+            [readonly]="true"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_quantity">Quantity</label>
+          <input type="number" class="form-control" name="quantity" id="field_quantity" data-cy="quantity" formControlName="quantity" />
+          <div *ngIf="editForm.get('quantity')!.invalid && (editForm.get('quantity')!.dirty || editForm.get('quantity')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('quantity')?.errors?.required"> This field is required. </small>
+            <small class="form-text text-danger" *ngIf="editForm.get('quantity')?.errors?.min"> This field should be at least 0.1. </small>
+            <small class="form-text text-danger" [hidden]="!editForm.get('quantity')?.errors?.number">
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

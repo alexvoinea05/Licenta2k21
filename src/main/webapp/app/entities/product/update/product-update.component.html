@@ -1,0 +1,150 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-product-heading" data-cy="ProductCreateUpdateHeading">Create or edit a Product</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('idProduct')!.value == null">
+          <label class="form-control-label" for="field_idProduct">Id Product</label>
+          <input
+            type="number"
+            class="form-control"
+            name="idProduct"
+            id="field_idProduct"
+            data-cy="idProduct"
+            formControlName="idProduct"
+            [readonly]="true"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_name">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+          <div *ngIf="editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('name')?.errors?.required"> This field is required. </small>
+            <small class="form-text text-danger" *ngIf="editForm.get('name')?.errors?.minlength">
+              This field is required to be at least 1 characters.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_price">Price</label>
+          <input type="number" class="form-control" name="price" id="field_price" data-cy="price" formControlName="price" />
+          <div *ngIf="editForm.get('price')!.invalid && (editForm.get('price')!.dirty || editForm.get('price')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('price')?.errors?.required"> This field is required. </small>
+            <small class="form-text text-danger" *ngIf="editForm.get('price')?.errors?.min"> This field should be at least 0.1. </small>
+            <small class="form-text text-danger" [hidden]="!editForm.get('price')?.errors?.number"> This field should be a number. </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_stock">Stock</label>
+          <input type="number" class="form-control" name="stock" id="field_stock" data-cy="stock" formControlName="stock" />
+          <div *ngIf="editForm.get('stock')!.invalid && (editForm.get('stock')!.dirty || editForm.get('stock')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('stock')?.errors?.required"> This field is required. </small>
+            <small class="form-text text-danger" *ngIf="editForm.get('stock')?.errors?.min"> This field should be at least 0.1. </small>
+            <small class="form-text text-danger" [hidden]="!editForm.get('stock')?.errors?.number"> This field should be a number. </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_imageUrl">Image Url</label>
+          <input type="text" class="form-control" name="imageUrl" id="field_imageUrl" data-cy="imageUrl" formControlName="imageUrl" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_productUrl">Product Url</label>
+          <input
+            type="text"
+            class="form-control"
+            name="productUrl"
+            id="field_productUrl"
+            data-cy="productUrl"
+            formControlName="productUrl"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_createdAt">Created At</label>
+          <div class="d-flex">
+            <input
+              id="field_createdAt"
+              data-cy="createdAt"
+              type="datetime-local"
+              class="form-control"
+              name="createdAt"
+              formControlName="createdAt"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_modifiedAt">Modified At</label>
+          <div class="d-flex">
+            <input
+              id="field_modifiedAt"
+              data-cy="modifiedAt"
+              type="datetime-local"
+              class="form-control"
+              name="modifiedAt"
+              formControlName="modifiedAt"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_idCategory">Id Category</label>
+          <select class="form-control" id="field_idCategory" data-cy="idCategory" name="idCategory" formControlName="idCategory">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="
+                categoryOption.idCategory === editForm.get('idCategory')!.value?.idCategory
+                  ? editForm.get('idCategory')!.value
+                  : categoryOption
+              "
+              *ngFor="let categoryOption of categoriesSharedCollection; trackBy: trackCategoryByIdCategory"
+            >
+              {{ categoryOption.idCategory }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_idGrower">Id Grower</label>
+          <select class="form-control" id="field_idGrower" data-cy="idGrower" name="idGrower" formControlName="idGrower">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="
+                appUserOption.idAppUser === editForm.get('idGrower')!.value?.idAppUser ? editForm.get('idGrower')!.value : appUserOption
+              "
+              *ngFor="let appUserOption of appUsersSharedCollection; trackBy: trackAppUserByIdAppUser"
+            >
+              {{ appUserOption.idAppUser }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

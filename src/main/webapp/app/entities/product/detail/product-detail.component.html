@@ -1,0 +1,68 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="product">
+      <h2 data-cy="productDetailsHeading"><span>Product</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>Id Product</span></dt>
+        <dd>
+          <span>{{ product.idProduct }}</span>
+        </dd>
+        <dt><span>Name</span></dt>
+        <dd>
+          <span>{{ product.name }}</span>
+        </dd>
+        <dt><span>Price</span></dt>
+        <dd>
+          <span>{{ product.price }}</span>
+        </dd>
+        <dt><span>Stock</span></dt>
+        <dd>
+          <span>{{ product.stock }}</span>
+        </dd>
+        <dt><span>Image Url</span></dt>
+        <dd>
+          <span>{{ product.imageUrl }}</span>
+        </dd>
+        <dt><span>Product Url</span></dt>
+        <dd>
+          <span>{{ product.productUrl }}</span>
+        </dd>
+        <dt><span>Created At</span></dt>
+        <dd>
+          <span>{{ product.createdAt | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Modified At</span></dt>
+        <dd>
+          <span>{{ product.modifiedAt | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Id Category</span></dt>
+        <dd>
+          <div *ngIf="product.idCategory">
+            <a [routerLink]="['/category', product.idCategory?.idCategory, 'view']">{{ product.idCategory?.idCategory }}</a>
+          </div>
+        </dd>
+        <dt><span>Id Grower</span></dt>
+        <dd>
+          <div *ngIf="product.idGrower">
+            <a [routerLink]="['/app-user', product.idGrower?.idAppUser, 'view']">{{ product.idGrower?.idAppUser }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/product', product.idProduct, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

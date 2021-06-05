@@ -1,0 +1,92 @@
+<div>
+  <h2 id="page-heading" data-cy="CartOrderDetailsHeading">
+    <span>Cart Order Details</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info mr-2" (click)="reset()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Refresh List</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-cart-order-details"
+        [routerLink]="['/cart-order-details/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span> Create a new Cart Order Details </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="cartOrderDetails?.length === 0">
+    <span>No cartOrderDetails found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="cartOrderDetails && cartOrderDetails.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
+          <th scope="col" jhiSortBy="idCartOrderDetails"><span>Id Cart Order Details</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="totalPrice"><span>Total Price</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="createdAt"><span>Created At</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="modifiedAt"><span>Modified At</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="statusCommand"><span>Status Command</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="idAppUser.idAppUser"><span>Id App User</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+        <tr *ngFor="let cartOrderDetails of cartOrderDetails; trackBy: trackIdCartOrderDetails" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/cart-order-details', cartOrderDetails.idCartOrderDetails, 'view']">{{
+              cartOrderDetails.idCartOrderDetails
+            }}</a>
+          </td>
+          <td>{{ cartOrderDetails.totalPrice }}</td>
+          <td>{{ cartOrderDetails.createdAt | formatMediumDatetime }}</td>
+          <td>{{ cartOrderDetails.modifiedAt | formatMediumDatetime }}</td>
+          <td>{{ cartOrderDetails.statusCommand }}</td>
+          <td>
+            <div *ngIf="cartOrderDetails.idAppUser">
+              <a [routerLink]="['/app-user', cartOrderDetails.idAppUser?.idAppUser, 'view']">{{ cartOrderDetails.idAppUser?.idAppUser }}</a>
+            </div>
+          </td>
+          <td class="text-right">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/cart-order-details', cartOrderDetails.idCartOrderDetails, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline">View</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/cart-order-details', cartOrderDetails.idCartOrderDetails, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(cartOrderDetails)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
