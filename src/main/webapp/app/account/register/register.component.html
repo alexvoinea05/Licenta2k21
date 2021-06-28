@@ -1,0 +1,243 @@
+<div>
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <h1 data-cy="registerTitle">Registration</h1>
+
+      <div class="alert alert-success" *ngIf="success"><strong>Registration saved!</strong> Please check your email for confirmation.</div>
+
+      <div class="alert alert-danger" *ngIf="error"><strong>Registration failed!</strong> Please try again later.</div>
+
+      <div class="alert alert-danger" *ngIf="errorUserExists">
+        <strong>Login name already registered!</strong> Please choose another one.
+      </div>
+
+      <div class="alert alert-danger" *ngIf="errorEmailExists"><strong>Email is already in use!</strong> Please choose another one.</div>
+
+      <div class="alert alert-danger" *ngIf="doNotMatch">The password and its confirmation do not match!</div>
+    </div>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <form name="form" role="form" (ngSubmit)="register()" [formGroup]="registerForm" *ngIf="!success">
+        <div class="form-group">
+          <label class="form-control-label" for="login">Username</label>
+          <input
+            type="text"
+            class="form-control"
+            id="login"
+            name="login"
+            placeholder="Your username"
+            formControlName="login"
+            data-cy="username"
+            #login
+          />
+
+          <div *ngIf="registerForm.get('login')!.invalid && (registerForm.get('login')!.dirty || registerForm.get('login')!.touched)">
+            <small class="form-text text-danger" *ngIf="registerForm.get('login')?.errors?.required"> Username-ul este obligatoriu. </small>
+
+            <small class="form-text text-danger" *ngIf="registerForm.get('login')?.errors?.minlength">
+              Username-ul trebuie sa aiba cel putin un caracter.
+            </small>
+
+            <small class="form-text text-danger" *ngIf="registerForm.get('login')?.errors?.maxlength">
+              Username-ul nu poate avea mai mult de 50 de caractere.
+            </small>
+
+            <small class="form-text text-danger" *ngIf="registerForm.get('login')?.errors?.pattern">
+              Username-ul poate contine doar litere si cifre.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="email">Email</label>
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            name="email"
+            placeholder="Email-ul tau"
+            formControlName="email"
+            data-cy="email"
+          />
+
+          <div *ngIf="registerForm.get('email')!.invalid && (registerForm.get('email')!.dirty || registerForm.get('email')!.touched)">
+            <small class="form-text text-danger" *ngIf="registerForm.get('email')?.errors?.required"> Email-ul este obligatoriu. </small>
+
+            <small class="form-text text-danger" *ngIf="registerForm.get('email')?.errors?.invalid"> Email-ul este invalid. </small>
+
+            <small class="form-text text-danger" *ngIf="registerForm.get('email')?.errors?.minlength">
+              Email-ul trebuie sa aiba macar 5 caractere.
+            </small>
+
+            <small class="form-text text-danger" *ngIf="registerForm.get('email')?.errors?.maxlength">
+              Email-ul nu poate avea mai mult de 100 de caractere.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="firstName">Prenumele</label>
+          <input
+            type="text"
+            class="form-control"
+            id="firstName"
+            name="firstName"
+            placeholder="Prenumele"
+            formControlName="firstName"
+            data-cy="fistName"
+          />
+
+          <div
+            *ngIf="
+              registerForm.get('firstName')!.invalid && (registerForm.get('firstName')!.dirty || registerForm.get('firstName')!.touched)
+            "
+          >
+            <small class="form-text text-danger" *ngIf="registerForm.get('firstName')?.errors?.required">
+              Prenumele este obligatoriu.
+            </small>
+
+            <small class="form-text text-danger" *ngIf="registerForm.get('firstName')?.errors?.minlength">
+              Prenumele trebuie sa aiba minim un caracter.
+            </small>
+
+            <small class="form-text text-danger" *ngIf="registerForm.get('firstName')?.errors?.maxlength">
+              Prenumele nu poate avea mai mult de 50 de caractere.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="lastName">Numele de familie</label>
+          <input
+            type="text"
+            class="form-control"
+            id="lastName"
+            name="lastName"
+            placeholder="Numele de familie"
+            formControlName="lastName"
+            data-cy="lastName"
+          />
+
+          <div
+            *ngIf="registerForm.get('lastName')!.invalid && (registerForm.get('lastName')!.dirty || registerForm.get('lastName')!.touched)"
+          >
+            <small class="form-text text-danger" *ngIf="registerForm.get('lastName')?.errors?.required">
+              Numele de familie este obligatoriu.
+            </small>
+
+            <small class="form-text text-danger" *ngIf="registerForm.get('lastName')?.errors?.minlength">
+              Numele de familie trebuie sa aiba minim un caracter.
+            </small>
+
+            <small class="form-text text-danger" *ngIf="registerForm.get('lastName')?.errors?.maxlength">
+              Numele de familie nu poate avea mai mult de 50 de caractere.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="adress">Adresa</label>
+          <input
+            type="text"
+            class="form-control"
+            id="adress"
+            name="adress"
+            placeholder="Jud. a, Loc. b, Str. c, Nr. x"
+            formControlName="adress"
+            data-cy="adress"
+          />
+
+          <div *ngIf="registerForm.get('adress')!.invalid && (registerForm.get('adress')!.dirty || registerForm.get('adress')!.touched)">
+            <small class="form-text text-danger" *ngIf="registerForm.get('adress')?.errors?.required"> Adresa este obligatorie. </small>
+
+            <small class="form-text text-danger" *ngIf="registerForm.get('adress')?.errors?.minlength">
+              Adresa trebuie sa aiba minim un caracter.
+            </small>
+
+            <small class="form-text text-danger" *ngIf="registerForm.get('adress')?.errors?.maxlength">
+              Adresa nu poate avea mai mult de 100 de caractere.
+            </small>
+
+            <small class="form-text text-danger" *ngIf="registerForm.get('adress')?.errors?.pattern">
+              Adresa poate contine doar litere, cifre si semne simple de punctuatie.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="password">Parola</label>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            name="password"
+            placeholder="New password"
+            formControlName="password"
+            data-cy="firstPassword"
+          />
+
+          <div
+            *ngIf="registerForm.get('password')!.invalid && (registerForm.get('password')!.dirty || registerForm.get('password')!.touched)"
+          >
+            <small class="form-text text-danger" *ngIf="registerForm.get('password')?.errors?.required"> Parola este obligatorie. </small>
+
+            <small class="form-text text-danger" *ngIf="registerForm.get('password')?.errors?.minlength">
+              Parola trebuie sa aiba minim 4 caractere.
+            </small>
+
+            <small class="form-text text-danger" *ngIf="registerForm.get('password')?.errors?.maxlength">
+              Parola nu poate avea mai mult de 50 de caractere.
+            </small>
+          </div>
+
+          <jhi-password-strength-bar [passwordToCheck]="registerForm.get('password')!.value"></jhi-password-strength-bar>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="confirmPassword">Confirmarea parolei</label>
+          <input
+            type="password"
+            class="form-control"
+            id="confirmPassword"
+            name="confirmPassword"
+            placeholder="Confirm the new password"
+            formControlName="confirmPassword"
+            data-cy="secondPassword"
+          />
+
+          <div
+            *ngIf="
+              registerForm.get('confirmPassword')!.invalid &&
+              (registerForm.get('confirmPassword')!.dirty || registerForm.get('confirmPassword')!.touched)
+            "
+          >
+            <small class="form-text text-danger" *ngIf="registerForm.get('confirmPassword')?.errors?.required">
+              Confirmarea parolei este obligatorie.
+            </small>
+
+            <small class="form-text text-danger" *ngIf="registerForm.get('confirmPassword')?.errors?.minlength">
+              Confirmarea parolei trebuie sa aiba minim 4 caractere.
+            </small>
+
+            <small class="form-text text-danger" *ngIf="registerForm.get('confirmPassword')?.errors?.maxlength">
+              Confirmarea parolei nu poate avea mai mult de 50 de caractere.
+            </small>
+          </div>
+        </div>
+
+        <button type="submit" [disabled]="registerForm.invalid" class="btn btn-primary" data-cy="submit">Register</button>
+      </form>
+
+      <div class="mt-3 alert alert-warning">
+        <span>If you want to </span>
+        <a class="alert-link" routerLink="/login">sign in</a
+        ><span
+          >, you can try the default accounts:<br />- Administrator (login="admin" and password="admin") <br />- User (login="user" and
+          password="user").</span
+        >
+      </div>
+    </div>
+  </div>
+</div>

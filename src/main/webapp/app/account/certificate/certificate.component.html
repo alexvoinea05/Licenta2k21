@@ -1,0 +1,36 @@
+<div>
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <h2>Incarcare Certificat</h2>
+      <form name="form" role="form" (ngSubmit)="onSubmit()" [formGroup]="imageForm">
+        <div class="form-group">
+          <label class="form-control-label" for="imageUrl">Certificat</label>
+          <input
+            type="file"
+            name="image"
+            accept="image/jpeg"
+            placeholder="Certificate"
+            class="form-control"
+            data-cy="imageUrl"
+            (change)="onFileSelect($event)"
+          />
+
+          <!--<button (click)="onSubmit()" 
+        class="btn btn-success">
+        Upload
+    </button>-->
+        </div>
+
+        <div class="row" *ngIf="showMsg">
+          <div class="col-xs-12">
+            <p class="alert alert-success">
+              <strong>Certificat incarcat cu succes!</strong>
+            </p>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" data-cy="submit">Incarca</button>
+      </form>
+    </div>
+  </div>
+</div>

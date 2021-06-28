@@ -1,0 +1,37 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="category">
+      <h2 data-cy="categoryDetailsHeading"><span>Categorie</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>Id Categorie</span></dt>
+        <dd>
+          <span>{{ category.idCategory }}</span>
+        </dd>
+        <dt><span>Nume Categorie</span></dt>
+        <dd>
+          <span>{{ category.categoryName }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Inapoi</span>
+      </button>
+
+      <button
+        type="button"
+        *jhiHasAnyAuthority="'ROLE_ADMIN'"
+        [routerLink]="['/category', category.idCategory, 'edit']"
+        class="btn btn-primary"
+      >
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Editare</span>
+      </button>
+    </div>
+  </div>
+</div>

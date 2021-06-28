@@ -1,0 +1,183 @@
+<div class="row">
+  <div class="col-md-3">
+    <span class="hipster img-fluid rounded"></span>
+  </div>
+
+  <div class="col-md-9">
+    <!--<h1 class="display-4">Bine ai venit! </h1>-->
+
+    <div [ngSwitch]="isAuthenticated()">
+      <div class="alert alert-success" *ngSwitchCase="true">
+        <span id="home-logged-message" *ngIf="account && display == false">"Bine ai venit,{{ account.login }}!".</span>
+
+        <p class="lead">Adauga cate produse doresti in cos si noi iti aratam de unde este cel mai bine sa le cumperi:</p>
+
+        <form [formGroup]="formSearch" (ngSubmit)="onSubmit()">
+          Lista produselor dorite:
+          <div formArrayName="productCantitate">
+            <div *ngFor="let prod of productCantitate.controls; let i = index">
+              <div [formGroupName]="i">
+                <div class="form-group">
+                  <label class="form-control-label" for="numeProdus">{{ i + 1 }} Nume de produs :</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="numeProdus"
+                    name="numeProdus"
+                    placeholder="numeProdus"
+                    formControlName="numeProdus"
+                    data-cy="numeProdus"
+                    #numeProdus
+                  />
+                </div>
+                <!--<input type="text" formControlName="numeProdus">-->
+
+                <div class="form-group">
+                  <label class="form-control-label" for="cantitate">Cantitate :</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="cantitate"
+                    name="cantitate"
+                    placeholder="cantitate"
+                    formControlName="cantitate"
+                    data-cy="cantitate"
+                    #cantitate
+                  />
+                  <!--<input type="text" formControlName="cantitate">-->
+                  <div *ngIf="prod.get('cantitate')!.invalid && (prod.get('cantitate')!.dirty || prod.get('cantitate')!.touched)">
+                    <small class="form-text text-danger" *ngIf="prod.get('cantitate')?.errors?.required">
+                      Cantitatea este obligatorie.
+                    </small>
+
+                    <small class="form-text text-danger" *ngIf="prod.get('cantitate')?.errors?.minlength">
+                      Cantitatea trebuie sa aiba macar 1 caracter.
+                    </small>
+
+                    <small class="form-text text-danger" *ngIf="prod.get('cantitate')?.errors?.maxlength">
+                      Cantitatea nu poate avea mai mult de 10 de caractere.
+                    </small>
+
+                    <small class="form-text text-danger" *ngIf="prod.get('cantitate')?.errors?.pattern">
+                      Cantitatea trebuie sa fie un numar valid.
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p *ngIf="productCantitate.controls">
+            <button type="submit" class="btn btn-secondary" [disabled]="formSearch.invalid">
+              <fa-icon icon="paper-plane"></fa-icon>
+              Trimite
+            </button>
+          </p>
+        </form>
+
+        <div class="d-flex justify-content-end">
+          <button type="button" class="btn btn-primary btn-sm" (click)="addProductCantitate()">
+            <fa-icon icon="plus"></fa-icon>
+            Adauga
+          </button>
+
+          <button type="button" class="btn btn-danger" (click)="stergeProdusCantitate()">
+            <fa-icon icon="minus-circle"></fa-icon>
+            Sterge
+          </button>
+        </div>
+      </div>
+      <div class="alert alert-warning" *ngIf="isAuth() == false">
+        <span>Bine ai venit!</span>
+        <a class="alert-link" (click)="login()">Ai deja un cont ?</a><span></span>
+        <div class="alert alert-warning" *ngSwitchCase="false">
+          <a class="alert-link" routerLink="account/register">Cont nou</a>
+        </div>
+
+        <!-- <div class="alert alert-warning" *ngSwitchCase="false">
+        <span>If you want to </span>
+        <a class="alert-link" (click)="login()">sign in</a
+        ><span
+          >, you can try the default accounts:<br />- Administrator (login="admin" and password="admin") <br />- User (login="user" and
+          password="user").</span
+        >
+      </div>
+
+      <div class="alert alert-warning" *ngSwitchCase="false">
+        <span>You don't have an account yet?</span>&nbsp;
+        <a class="alert-link" routerLink="account/register">Register a new account</a>
+      </div>
+      </div> -->
+      </div>
+
+      <div *ngIf="display">
+        <div class="d-flex justify-content-end">
+          <button class="btn btn-info mr-2" (click)="reset()" [disabled]="isLoading">
+            <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+            <span>Cautare noua</span>
+          </button>
+          <jhi-alert-error></jhi-alert-error>
+
+          <jhi-alert></jhi-alert>
+
+          <div class="alert alert-warning" id="no-result" *ngIf="products1?.length === 0">
+            <span>Niciun produs gasit momentan.</span>
+          </div>
+
+          <div class="table-responsive" id="entities" *ngIf="products1 && products1.length > 0">
+            <table class="table table-striped" aria-describedby="page-heading">
+              <thead>
+                <tr>
+                  <th scope="col"><span>Id Produs</span></th>
+                  <th scope="col"><span>Nume</span></th>
+                  <th scope="col"><span>Pret</span></th>
+                  <th scope="col"><span>Stoc</span></th>
+                  <th scope="col"><span>Nume categorie</span></th>
+                  <th scope="col"><span>Nume producator</span></th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody infinite-scroll>
+                <tr *ngFor="let product of products1" data-cy="entityTable">
+                  <td>
+                    <a [routerLink]="['/product', product.idProduct, 'view']">{{ product.idProduct }}</a>
+                  </td>
+                  <td>{{ product.name }}</td>
+                  <td>{{ product.price }}</td>
+                  <td>{{ product.stock }}</td>
+                  <td>
+                    <div *ngIf="product.idCategory">
+                      <a [routerLink]="['/category', product.idCategory?.idCategory, 'view']">{{ product.idCategory?.categoryName }}</a>
+                    </div>
+                  </td>
+                  <td>
+                    <div *ngIf="product.idGrower">
+                      <a [routerLink]="['/app-user', product.idGrower?.idAppUser, 'view']"
+                        >{{ product.idGrower?.user?.firstName }} {{ product.idGrower?.user?.lastName }}</a
+                      >
+                    </div>
+                  </td>
+                  <td class="text-right">
+                    <div class="btn-group">
+                      <button
+                        type="submit"
+                        [routerLink]="['/product', product.idProduct, 'add-product-to-cart']"
+                        class="btn btn-primary btn-sm"
+                        data-cy="entityEditButton"
+                      >
+                        <fa-icon icon="cart-plus"></fa-icon>
+                        <span class="d-none d-md-inline">Adauga in cos</span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <jhi-best-products *ngIf="products" [products]="products"></jhi-best-products>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,51 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="cartItems">
+      <h2 data-cy="cartItemsDetailsHeading"><span>Produs din cos</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>Id Produs Cos</span></dt>
+        <dd>
+          <span>{{ cartItems.idCartItems }}</span>
+        </dd>
+        <dt><span>Cantitate</span></dt>
+        <dd>
+          <span>{{ cartItems.quantity }}</span>
+        </dd>
+        <dt><span>Nume Produs</span></dt>
+        <dd>
+          <div *ngIf="cartItems.idProduct">
+            <a [routerLink]="['/product', cartItems.idProduct?.idProduct, 'view']">{{ cartItems.idProduct?.name }}</a>
+          </div>
+        </dd>
+        <dt><span>Id Cos</span></dt>
+        <dd>
+          <div *ngIf="cartItems.idOrderDetails">
+            <a [routerLink]="['/cart-order-details', cartItems.idOrderDetails?.idCartOrderDetails, 'view']">{{
+              cartItems.idOrderDetails?.idCartOrderDetails
+            }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Inapoi</span>
+      </button>
+
+      <button
+        type="button"
+        *jhiHasAnyAuthority="'ROLE_ADMIN'"
+        [routerLink]="['/cart-items', cartItems.idCartItems, 'edit']"
+        class="btn btn-primary"
+      >
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Editare</span>
+      </button>
+    </div>
+  </div>
+</div>
