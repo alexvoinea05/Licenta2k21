@@ -1,0 +1,91 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-cart-items-heading" data-cy="CartItemsCreateUpdateHeading">Creare sau editare a unui produs din cos</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('idCartItems')!.value == null">
+          <label class="form-control-label" for="field_idCartItems">Id Produs Cos</label>
+          <input
+            type="number"
+            class="form-control"
+            name="idCartItems"
+            id="field_idCartItems"
+            data-cy="idCartItems"
+            formControlName="idCartItems"
+            [readonly]="true"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_quantity">Cantitate</label>
+          <input type="number" class="form-control" name="quantity" id="field_quantity" data-cy="quantity" formControlName="quantity" />
+          <div *ngIf="editForm.get('quantity')!.invalid && (editForm.get('quantity')!.dirty || editForm.get('quantity')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('quantity')?.errors?.required"> Acest camp este obligatoriu. </small>
+            <small class="form-text text-danger" *ngIf="editForm.get('quantity')?.errors?.min">
+              Acest camp trebuie sa fie peste 0.1.
+            </small>
+            <small class="form-text text-danger" [hidden]="!editForm.get('quantity')?.errors?.number">
+              Acest camp trebuie sa fie un numar.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_idProduct">Id Produs</label>
+          <select class="form-control" id="field_idProduct" data-cy="idProduct" name="idProduct" formControlName="idProduct">
+            <option
+              [ngValue]="
+                productOption.idProduct === editForm.get('idProduct')!.value?.idProduct ? editForm.get('idProduct')!.value : productOption
+              "
+              *ngFor="let productOption of productsSharedCollection; trackBy: trackProductByIdProduct"
+            >
+              {{ productOption.name }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_idOrderDetails">Id Cos</label>
+          <select
+            class="form-control"
+            id="field_idOrderDetails"
+            data-cy="idOrderDetails"
+            name="idOrderDetails"
+            formControlName="idOrderDetails"
+          >
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="
+                cartOrderDetailsOption.idCartOrderDetails === editForm.get('idOrderDetails')!.value?.idCartOrderDetails
+                  ? editForm.get('idOrderDetails')!.value
+                  : cartOrderDetailsOption
+              "
+              *ngFor="let cartOrderDetailsOption of cartOrderDetailsSharedCollection; trackBy: trackCartOrderDetailsByIdCartOrderDetails"
+            >
+              {{ cartOrderDetailsOption.idCartOrderDetails }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Anulare</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Salveaza</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

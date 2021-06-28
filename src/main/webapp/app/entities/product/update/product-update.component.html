@@ -1,0 +1,95 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-product-heading" data-cy="ProductCreateUpdateHeading">Creaza sau editeaza un produs</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('idProduct')!.value == null">
+          <label class="form-control-label" for="field_idProduct">Id Produs</label>
+          <input
+            type="number"
+            class="form-control"
+            name="idProduct"
+            id="field_idProduct"
+            data-cy="idProduct"
+            formControlName="idProduct"
+            [readonly]="true"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_name">Nume</label>
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+          <div *ngIf="editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('name')?.errors?.required"> Acest camp este obligatoriu. </small>
+            <small class="form-text text-danger" *ngIf="editForm.get('name')?.errors?.minlength">
+              Acest camp trebuie sa aiba minim 1 caracter.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_price">Pret in lei</label>
+          <input type="number" class="form-control" name="price" id="field_price" data-cy="price" formControlName="price" />
+          <div *ngIf="editForm.get('price')!.invalid && (editForm.get('price')!.dirty || editForm.get('price')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('price')?.errors?.required"> Acest camp este obligatoriu. </small>
+            <small class="form-text text-danger" *ngIf="editForm.get('price')?.errors?.min">
+              Acest camp trebuie sa aiba o valoare mai mare de 0.1.
+            </small>
+            <small class="form-text text-danger" [hidden]="!editForm.get('price')?.errors?.number">
+              Acest camp trebuie sa fie un numar.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_stock">Stoc</label>
+          <input type="number" class="form-control" name="stock" id="field_stock" data-cy="stock" formControlName="stock" />
+          <div *ngIf="editForm.get('stock')!.invalid && (editForm.get('stock')!.dirty || editForm.get('stock')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('stock')?.errors?.required"> Acest camp este obligatoriu. </small>
+            <small class="form-text text-danger" *ngIf="editForm.get('stock')?.errors?.min">
+              Acest camp trebuie sa aiba o valoare mai mare de 0.1.
+            </small>
+            <small class="form-text text-danger" [hidden]="!editForm.get('stock')?.errors?.number">
+              Acest camp trebuie sa fie un numar.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_idCategory">Nume categorie</label>
+          <select class="form-control" id="field_idCategory" data-cy="idCategory" name="idCategory" formControlName="idCategory">
+            <option
+              [ngValue]="
+                categoryOption.categoryName === editForm.get('idCategory')!.value?.categoryName
+                  ? editForm.get('idCategory')!.value
+                  : categoryOption
+              "
+              *ngFor="let categoryOption of categoriesSharedCollection; trackBy: trackCategoryByIdCategory"
+            >
+              {{ categoryOption.categoryName }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Anulare</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Salveaza</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

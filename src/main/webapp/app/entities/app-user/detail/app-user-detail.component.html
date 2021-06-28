@@ -1,0 +1,49 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="appUser">
+      <h2 data-cy="appUserDetailsHeading"><span>App User</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>Id App User</span></dt>
+        <dd>
+          <span>{{ appUser.idAppUser }}</span>
+        </dd>
+        <dt><span>Adresa</span></dt>
+        <dd>
+          <span>{{ appUser.adress }}</span>
+        </dd>
+        <dt><span>Nume</span></dt>
+        <dd>
+          <span>{{ appUser.user?.lastName }}</span>
+        </dd>
+        <dt><span>Prenume</span></dt>
+        <dd>
+          <span>{{ appUser.user?.firstName }}</span>
+        </dd>
+        <dt><span>Email</span></dt>
+        <dd>
+          <span>{{ appUser.user?.email }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+
+      <button
+        *jhiHasAnyAuthority="'ROLE_ADMIN'"
+        type="button"
+        [routerLink]="['/app-user', appUser.idAppUser, 'edit']"
+        class="btn btn-primary"
+      >
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

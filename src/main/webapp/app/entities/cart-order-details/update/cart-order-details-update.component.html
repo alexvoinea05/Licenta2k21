@@ -1,0 +1,87 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-cart-order-details-heading" data-cy="CartOrderDetailsCreateUpdateHeading">Creaza sau editeaza un cos de cumparaturi</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('idCartOrderDetails')!.value == null">
+          <label class="form-control-label" for="field_idCartOrderDetails">Id Cos</label>
+          <input
+            type="number"
+            class="form-control"
+            name="idCartOrderDetails"
+            id="field_idCartOrderDetails"
+            data-cy="idCartOrderDetails"
+            formControlName="idCartOrderDetails"
+            [readonly]="true"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_totalPrice">Pret total</label>
+          <input
+            type="number"
+            class="form-control"
+            name="totalPrice"
+            id="field_totalPrice"
+            data-cy="totalPrice"
+            formControlName="totalPrice"
+          />
+          <div *ngIf="editForm.get('totalPrice')!.invalid && (editForm.get('totalPrice')!.dirty || editForm.get('totalPrice')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('totalPrice')?.errors?.min">
+              Acesta trebuie sa fie cel putin 0.1.
+            </small>
+            <small class="form-text text-danger" [hidden]="!editForm.get('totalPrice')?.errors?.number">
+              Acest camp trebuie sa fie un numar.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_statusCommand">Status comanda</label>
+          <input
+            type="text"
+            class="form-control"
+            name="statusCommand"
+            id="field_statusCommand"
+            data-cy="statusCommand"
+            formControlName="statusCommand"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_idAppUser">Id App User</label>
+          <select class="form-control" id="field_idAppUser" data-cy="idAppUser" name="idAppUser" formControlName="idAppUser">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="
+                appUserOption.idAppUser === editForm.get('idAppUser')!.value?.idAppUser ? editForm.get('idAppUser')!.value : appUserOption
+              "
+              *ngFor="let appUserOption of appUsersSharedCollection; trackBy: trackAppUserByIdAppUser"
+            >
+              {{ appUserOption.idAppUser }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Anulare</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Salveaza</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

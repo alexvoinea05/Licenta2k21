@@ -1,0 +1,60 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-app-user-heading" data-cy="AppUserCreateUpdateHeading">Creaza sau editeaza un App User</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('idAppUser')!.value == null">
+          <label class="form-control-label" for="field_idAppUser">Id App User</label>
+          <input
+            type="number"
+            class="form-control"
+            name="idAppUser"
+            id="field_idAppUser"
+            data-cy="idAppUser"
+            formControlName="idAppUser"
+            [readonly]="true"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_adress">Adresa</label>
+          <input type="text" class="form-control" name="adress" id="field_adress" data-cy="adress" formControlName="adress" />
+          <div *ngIf="editForm.get('adress')!.invalid && (editForm.get('adress')!.dirty || editForm.get('adress')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('adress')?.errors?.required"> Acest camp este obligatoriu </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_user">User</label>
+          <select class="form-control" id="field_user" data-cy="user" name="user" formControlName="user">
+            <option
+              [ngValue]="userOption.id === editForm.get('user')!.value?.id ? editForm.get('user')!.value : userOption"
+              *ngFor="let userOption of usersSharedCollection; trackBy: trackUserById"
+            >
+              {{ userOption.id }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Anulare</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Salveaza</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

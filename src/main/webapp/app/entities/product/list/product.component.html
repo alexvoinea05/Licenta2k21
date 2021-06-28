@@ -1,0 +1,114 @@
+<div>
+  <h2 id="page-heading" data-cy="ProductHeading">
+    <span>Products</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info mr-2" (click)="reset()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Actualizeaza lista</span>
+      </button>
+
+      <button
+        *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_GROWER']"
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-product"
+        [routerLink]="['/product/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span> Creaza un produs nou </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="products?.length === 0">
+    <span>Niciun produs gasit momentan.</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="products && products.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
+          <th scope="col" jhiSortBy="idProduct"><span>Id Produs</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="name"><span>Nume</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="price"><span>Pret in lei</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="stock"><span>Stoc</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="idCategory.idCategory"><span>Nume Categorie</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="idGrower.idAppUser"><span>Nume Producator</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+        <tr *ngFor="let product of products; trackBy: trackIdProduct" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/product', product.idProduct, 'view']">{{ product.idProduct }}</a>
+          </td>
+          <td>{{ product.name }}</td>
+          <td>{{ product.price }}</td>
+          <td>{{ product.stock }}</td>
+          <td>
+            <div *ngIf="product.idCategory">
+              <a [routerLink]="['/category', product.idCategory?.idCategory, 'view']">{{ product.idCategory?.categoryName }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="product.idGrower">
+              <a [routerLink]="['/app-user', product.idGrower?.idAppUser, 'view']"
+                >{{ product.idGrower?.user?.firstName }} {{ product.idGrower?.user?.lastName }}</a
+              >
+            </div>
+          </td>
+          <td class="text-right">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/product', product.idProduct, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline">Vizualizare</span>
+              </button>
+
+              <button
+                *ngIf="checkIdGrower(product.idGrower!.idAppUser!)"
+                type="submit"
+                [routerLink]="['/product', product.idProduct, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline">Editare</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/product', product.idProduct, 'add-product-to-cart']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="plus"></fa-icon>
+                <span class="d-none d-md-inline">Adauga in cos</span>
+              </button>
+
+              <button
+                type="submit"
+                *ngIf="checkIdGrower(product.idGrower!.idAppUser!)"
+                (click)="delete(product)"
+                class="btn btn-danger btn-sm"
+                data-cy="entityDeleteButton"
+              >
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline">Stergere</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

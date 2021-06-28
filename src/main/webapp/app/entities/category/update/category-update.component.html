@@ -1,0 +1,62 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-category-heading" data-cy="CategoryCreateUpdateHeading">Creaza sau editeaza o categorie</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('idCategory')!.value == null">
+          <label class="form-control-label" for="field_idCategory">Id Categorie</label>
+          <input
+            type="number"
+            class="form-control"
+            name="idCategory"
+            id="field_idCategory"
+            data-cy="idCategory"
+            formControlName="idCategory"
+            [readonly]="true"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_categoryName">Nume categorie</label>
+          <input
+            type="text"
+            class="form-control"
+            name="categoryName"
+            id="field_categoryName"
+            data-cy="categoryName"
+            formControlName="categoryName"
+          />
+          <div
+            *ngIf="editForm.get('categoryName')!.invalid && (editForm.get('categoryName')!.dirty || editForm.get('categoryName')!.touched)"
+          >
+            <small class="form-text text-danger" *ngIf="editForm.get('categoryName')?.errors?.required">
+              Acest camp este obligatoriu.
+            </small>
+            <small class="form-text text-danger" *ngIf="editForm.get('categoryName')?.errors?.minlength">
+              Campul trebuie sa aiba minim un caracter.
+            </small>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Anulare</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Salveza</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

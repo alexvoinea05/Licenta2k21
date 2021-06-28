@@ -1,0 +1,86 @@
+<div>
+  <h2 id="page-heading" data-cy="CategoryHeading">
+    <span>Categorii</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info mr-2" (click)="reset()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Refresh List</span>
+      </button>
+
+      <button
+        *jhiHasAnyAuthority="'ROLE_ADMIN'"
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-category"
+        [routerLink]="['/category/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span> Creare Categorie </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="categories?.length === 0">
+    <span>Nicio categorie gasita</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="categories && categories.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
+          <th scope="col" jhiSortBy="idCategory"><span>Id Categorie</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="categoryName"><span>Nume Categorie</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+        <tr *ngFor="let category of categories; trackBy: trackIdCategory" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/category/products', category.idCategory]">{{ category.idCategory }}</a>
+          </td>
+          <td>{{ category.categoryName }}</td>
+          <td class="text-right">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/category', category.idCategory, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline">Vizualizare</span>
+              </button>
+
+              <button
+                *jhiHasAnyAuthority="'ROLE_ADMIN'"
+                type="submit"
+                [routerLink]="['/category', category.idCategory, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline">Editare</span>
+              </button>
+
+              <button
+                type="submit"
+                (click)="delete(category)"
+                class="btn btn-danger btn-sm"
+                data-cy="entityDeleteButton"
+                *jhiHasAnyAuthority="'ROLE_ADMIN'"
+              >
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline">Stergere</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

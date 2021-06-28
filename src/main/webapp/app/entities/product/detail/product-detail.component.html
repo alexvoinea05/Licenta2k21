@@ -1,0 +1,57 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="product">
+      <h2 data-cy="productDetailsHeading"><span>Produse</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>Id Produs</span></dt>
+        <dd>
+          <span>{{ product.idProduct }}</span>
+        </dd>
+        <dt><span>Nume</span></dt>
+        <dd>
+          <span>{{ product.name }}</span>
+        </dd>
+        <dt><span>Pret in lei</span></dt>
+        <dd>
+          <span>{{ product.price }}</span>
+        </dd>
+        <dt><span>Stoc</span></dt>
+        <dd>
+          <span>{{ product.stock }}</span>
+        </dd>
+        <dt><span>Nume Categorie</span></dt>
+        <dd>
+          <div *ngIf="product.idCategory">
+            <a [routerLink]="['/category', product.idCategory?.idCategory, 'view']">{{ product.idCategory?.categoryName }}</a>
+          </div>
+        </dd>
+        <dt><span>Id Producator</span></dt>
+        <dd>
+          <div *ngIf="product.idGrower">
+            <a [routerLink]="['/app-user', product.idGrower?.idAppUser, 'view']">{{ product.idGrower?.idAppUser }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Inapoi</span>
+      </button>
+
+      <button
+        type="button"
+        *jhiHasAnyAuthority="'ROLE_ADMIN'"
+        [routerLink]="['/product', product.idProduct, 'edit']"
+        class="btn btn-primary"
+      >
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Editare</span>
+      </button>
+    </div>
+  </div>
+</div>
