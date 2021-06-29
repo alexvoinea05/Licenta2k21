@@ -35,7 +35,10 @@ public class CartCustomResource {
 
     @PostMapping("/add/product")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addProductToCart(@Valid @RequestBody ProductCartCustomDTO productCartCustomDTO) {
+    public void addProductToCart(@Valid @RequestBody ProductCartCustomDTO productCartCustomDTO) throws Exception {
+        if(productRepository.findById(productCartCustomDTO.getIdProduct()).get().getStock().compareTo(productCartCustomDTO.getQuantity())<0){
+                throw new Exception("Cantitatea selectata este mai mare decat stocul!");
+        }
         cartCustomService.addProduct(productCartCustomDTO);
     }
 

@@ -2,19 +2,19 @@
   <div class="row justify-content-center">
     <div class="col-md-8">
       <h2 *ngIf="account">
-        User settings for [<strong>{{ account.login }}</strong
+        Setari pentru user-ul [<strong>{{ account.login }}</strong
         >]
       </h2>
 
       <div class="alert alert-success" *ngIf="success">
-        <strong>Settings saved!</strong>
+        <strong>Setari salvate!</strong>
       </div>
 
       <jhi-alert-error></jhi-alert-error>
 
       <form name="form" role="form" (ngSubmit)="save()" [formGroup]="settingsForm" *ngIf="account" novalidate>
         <div class="form-group">
-          <label class="form-control-label" for="firstName">First Name</label>
+          <label class="form-control-label" for="firstName">Prenume</label>
           <input
             type="text"
             class="form-control"
@@ -31,21 +31,21 @@
             "
           >
             <small class="form-text text-danger" *ngIf="settingsForm.get('firstName')?.errors?.required">
-              Your first name is required.
+              Prenumele este necesar.
             </small>
 
             <small class="form-text text-danger" *ngIf="settingsForm.get('firstName')?.errors?.minlength">
-              Your first name is required to be at least 1 character.
+              Prenumele trebuie sa aiba minim 1 caracter.
             </small>
 
             <small class="form-text text-danger" *ngIf="settingsForm.get('firstName')?.errors?.maxlength">
-              Your first name cannot be longer than 50 characters.
+              Prenumele nu poate avea mai mult de 50 de caractere.
             </small>
           </div>
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" for="lastName">Last Name</label>
+          <label class="form-control-label" for="lastName">Nume</label>
           <input
             type="text"
             class="form-control"
@@ -60,15 +60,15 @@
             *ngIf="settingsForm.get('lastName')!.invalid && (settingsForm.get('lastName')!.dirty || settingsForm.get('lastName')!.touched)"
           >
             <small class="form-text text-danger" *ngIf="settingsForm.get('lastName')?.errors?.required">
-              Your last name is required.
+              Numele este necesar.
             </small>
 
             <small class="form-text text-danger" *ngIf="settingsForm.get('lastName')?.errors?.minlength">
-              Your last name is required to be at least 1 character.
+              Numele trebuie sa aiba minim 1 caracter.
             </small>
 
             <small class="form-text text-danger" *ngIf="settingsForm.get('lastName')?.errors?.maxlength">
-              Your last name cannot be longer than 50 characters.
+              Numele nu poate avea mai mult de 50 de caractere.
             </small>
           </div>
         </div>
@@ -86,16 +86,16 @@
           />
 
           <div *ngIf="settingsForm.get('email')!.invalid && (settingsForm.get('email')!.dirty || settingsForm.get('email')!.touched)">
-            <small class="form-text text-danger" *ngIf="settingsForm.get('email')?.errors?.required"> Your email is required. </small>
+            <small class="form-text text-danger" *ngIf="settingsForm.get('email')?.errors?.required"> Email-ul este obligatoriu. </small>
 
-            <small class="form-text text-danger" *ngIf="settingsForm.get('email')?.errors?.email"> Your email is invalid. </small>
+            <small class="form-text text-danger" *ngIf="settingsForm.get('email')?.errors?.email"> Email-ul este invalid. </small>
 
             <small class="form-text text-danger" *ngIf="settingsForm.get('email')?.errors?.minlength">
-              Your email is required to be at least 5 characters.
+              Email-ul trebuie sa aiba macar 5 caractere.
             </small>
 
             <small class="form-text text-danger" *ngIf="settingsForm.get('email')?.errors?.maxlength">
-              Your email cannot be longer than 100 characters.
+              Email-ul nu poate avea mai mult de 100 de caractere.
             </small>
           </div>
         </div>

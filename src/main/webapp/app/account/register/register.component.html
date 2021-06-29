@@ -1,19 +1,19 @@
 <div>
   <div class="row justify-content-center">
     <div class="col-md-8">
-      <h1 data-cy="registerTitle">Registration</h1>
+      <h1 data-cy="registerTitle">Inregistrare</h1>
 
-      <div class="alert alert-success" *ngIf="success"><strong>Registration saved!</strong> Please check your email for confirmation.</div>
+      <div class="alert alert-success" *ngIf="success"><strong>Inregistrare salvata!</strong> Te rugam verifica emailul pentru confirmare.</div>
 
-      <div class="alert alert-danger" *ngIf="error"><strong>Registration failed!</strong> Please try again later.</div>
+      <div class="alert alert-danger" *ngIf="error"><strong>Inregistrare esuata</strong> Te rugam incearca mai tarziu.</div>
 
       <div class="alert alert-danger" *ngIf="errorUserExists">
-        <strong>Login name already registered!</strong> Please choose another one.
+        <strong>Username-ul este folosit deja!</strong> Te rugam incearca alt username.
       </div>
 
-      <div class="alert alert-danger" *ngIf="errorEmailExists"><strong>Email is already in use!</strong> Please choose another one.</div>
+      <div class="alert alert-danger" *ngIf="errorEmailExists"><strong>Email-ul este deja folosit!</strong> Te rugam foloseste alta adresa de email.</div>
 
-      <div class="alert alert-danger" *ngIf="doNotMatch">The password and its confirmation do not match!</div>
+      <div class="alert alert-danger" *ngIf="doNotMatch">Parola si confirmarea parolei nu se potrivesc!</div>
     </div>
   </div>
 
@@ -65,7 +65,7 @@
           <div *ngIf="registerForm.get('email')!.invalid && (registerForm.get('email')!.dirty || registerForm.get('email')!.touched)">
             <small class="form-text text-danger" *ngIf="registerForm.get('email')?.errors?.required"> Email-ul este obligatoriu. </small>
 
-            <small class="form-text text-danger" *ngIf="registerForm.get('email')?.errors?.invalid"> Email-ul este invalid. </small>
+            <small class="form-text text-danger" *ngIf="registerForm.get('email')?.errors?.email"> Email-ul este invalid. </small>
 
             <small class="form-text text-danger" *ngIf="registerForm.get('email')?.errors?.minlength">
               Email-ul trebuie sa aiba macar 5 caractere.
@@ -153,7 +153,7 @@
             <small class="form-text text-danger" *ngIf="registerForm.get('adress')?.errors?.required"> Adresa este obligatorie. </small>
 
             <small class="form-text text-danger" *ngIf="registerForm.get('adress')?.errors?.minlength">
-              Adresa trebuie sa aiba minim un caracter.
+              Adresa trebuie sa aiba minim 5 caractere.
             </small>
 
             <small class="form-text text-danger" *ngIf="registerForm.get('adress')?.errors?.maxlength">
@@ -227,17 +227,17 @@
           </div>
         </div>
 
-        <button type="submit" [disabled]="registerForm.invalid" class="btn btn-primary" data-cy="submit">Register</button>
+        <button type="submit" [disabled]="registerForm.invalid" class="btn btn-primary" data-cy="submit">Inregistrare</button>
       </form>
 
-      <div class="mt-3 alert alert-warning">
+      <!-- <div class="mt-3 alert alert-warning">
         <span>If you want to </span>
         <a class="alert-link" routerLink="/login">sign in</a
         ><span
           >, you can try the default accounts:<br />- Administrator (login="admin" and password="admin") <br />- User (login="user" and
           password="user").</span
         >
-      </div>
+      </div> -->
     </div>
   </div>
 </div>
