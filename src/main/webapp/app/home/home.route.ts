@@ -9,7 +9,7 @@ export const HOME_ROUTE: Route = {
   path: '',
   component: HomeComponent,
   data: {
-    pageTitle: 'Welcome, Java Hipster!',
+    pageTitle: 'Welcome to LocalGrower!',
   },
 };
 
