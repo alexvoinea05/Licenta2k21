@@ -132,4 +132,4 @@ jhipster:
 
 # application:
 custom:
-  location: /app/src/main/image/certificate-grower/
+  location: localgrower/app/src/main/image/certificate-grower/
